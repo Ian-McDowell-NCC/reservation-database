@@ -1,2 +1,2 @@
-Uses node.js and mssql to connect to a sql database server I set up using ReservaitonDatabase.sql
+Uses node.js and mssql to connect to a sql database server I set up using ReservaitonDatabase.sql.
 If you want to run a query on the database you can either make a SQL and use runSQLfile(*filepath*) or use runSingleQuery(*query*). runSingleQuery will return a recordsets, which I'm pretty sure is an array of the results and each result is given as a JSON. The results can be sent to script.js and output to an HTML
