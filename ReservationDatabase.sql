@@ -71,7 +71,7 @@ CREATE TABLE SystemUser (
  FOREIGN KEY (WorksAt) REFERENCES Restaurant (RestaurantID)
  );
 
- /* SystemUser (UserID int, UserFirstName varchar(15), UserLastName varchar(15),UserPhone varchar(20), UserEmail varchar(50), UserRole char(3)) */
+ /* SystemUser (UserID int, UserFirstName varchar(15), UserLastName varchar(15), UserPhone varchar(20), UserEmail varchar(50), UserRole char(3)) */
  insert into SystemUser values
  (115102704, 'Ian', 'McDowell', '+1 (484)-983-1943', 'ian.mcdowell@gmail.gmail', 'EMP');
   insert into SystemUser values
@@ -93,7 +93,7 @@ insert into Restaurant values
 insert into Restaurant values
 (102030405, 'Team Green''s Greens Poconos', '2411 Rt 715, Tannersville, PA 18372', 16, NULL, NULL);
 
- /*Reservation (ReservationID int, ResDate date NN,  ResTime time NN, PartySize int NN, PartyName varchar(30) NN, ResPhone varchar(20), ResEmail varchar(30), OptIns bit NN, ResStatus char(10) NN, DateCreated smalldatetime NN, Comments text, RestaurantAt int, AssignedToTable int DEFAULT NULL)*/
+ /* Reservation (ReservationID int, ResDate date NN,  ResTime time NN, PartySize int NN, PartyName varchar(30) NN, ResPhone varchar(20), ResEmail varchar(30), OptIns bit NN, ResStatus char(10) NN, DateCreated smalldatetime NN, Comments text, RestaurantAt int, AssignedToTable int DEFAULT NULL) */
  insert into Reservation values
  (324293838, '2026-03-29', '13:30:00', 2, 'Martha M', '+1 (727)-382-9823', 'MarthaMango@gmail.com', 0, 'IN FUTURE', '2026-03-24 21:38:43', NULL, 110293012, NULL);
   insert into Reservation values
@@ -129,7 +129,7 @@ insert into RestaurantTable values
 insert into RestaurantTable values
 (4, 102030405, 4, 'TBL', 2);
 
-/*WaitStaff (WaiterID int, WaiterFirstName varchar(15), WaiterLastName varchar(15), WaiterSection int, WorksAt int)*/
+/* WaitStaff (WaiterID int, WaiterFirstName varchar(15), WaiterLastName varchar(15), WaiterSection int, WorksAt int) */
 insert into WaitStaff values
 (102114783, 'Ian', 'McDowell', 2, 110293012);
 insert into WaitStaff values
@@ -143,45 +143,43 @@ insert into WaitStaff values
 insert into WaitStaff values
 (147898654, 'Persephone', 'Harshbarger', NULL, 110293012);
 
-
-
 /*----------------QUERIES-------------------
-everything beginning with @ are example/placeholder variables
-sorry for the confusing names haha*/
+Everything beginning with @ is an example/placeholder variable
+*/
 
---Assign table to reservation
+-- Assign table to reservation
 DECLARE @UpdateReservationID int = 192334532
 DECLARE @UpdateReservationTable int = 1 
 UPDATE Reservation
 SET AssignedToTable = @UpdateReservationTable
 WHERE ReservationID = @UpdateReservationID
 
---Update Status for reservation
+-- Update status for reservation
 DECLARE @UpdateReservationStatusID int = 192334532
 DECLARE @UpdateReservationStatus char(10) = 'WAITING'
 UPDATE Reservation
 SET ResStatus = @UpdateReservationStatus
 WHERE ReservationID = @UpdateReservationStatusID
 
---View Reservations for a specific date
+-- View reservations for a specific date
 DECLARE @SearchDate DATE = GETDATE()
 SELECT *
 FROM Reservation
 WHERE ResDate = @SearchDate
 ORDER BY ResTime
 
---View all reservations that are not finished 
+-- View all reservations that are not finished
 SELECT *
 FROM Reservation
 WHERE ResStatus != 'FINISHED'
 
---View Reservation by ID
+-- View reservation by ID
 DECLARE @SearchResID int = 324293838 
 SELECT *
 FROM Reservation
 WHERE ReservationID = @SearchResID
 
---Find table details for reservation
+-- Find table details for reservation
 DECLARE @SearchReservationID int = 192334532
 DECLARE @SearchReservationTable int
 DECLARE @SearchReservationRestaurant int 
