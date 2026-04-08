@@ -1,22 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-<style>
-table{
-border: 2px solid black;
-border-collapse: collapse;
-}
-td{
-border: 1px solid gray;
-}
-.redAsterisk{
-  color: red;
-}
-</style>
-</head>
-<body>
 
+<head>
+  <style>
+    table {
+      border: 2px solid black;
+      border-collapse: collapse;
+    }
+
+    td {
+      border: 1px solid gray;
+    }
+
+    .redAsterisk {
+      color: red;
+    }
+  </style>
+</head>
+
+<body>
+  <form id="CreateResForm">
+    <fieldset>
+      <legend>Create Reservation:</legend>
+      Red asterisk denotes a required element<br><br>
+      <label for="partyName"> <span class="redAsterisk">*</span> Name:</label>
+      <input type="text" id="partyName" name="partyName" required><br><br>
+
+      <label for="resDate"> <span class="redAsterisk">*</span> Reservation Date:</label>
+      <input type="date" id="resDate" name="resDate" required><br><br>
+
+      <label for="restaurant"><span class="redAsterisk">*</span> Choose a location:</label>
+      <select id="restaurants" name="restaurant" required>
+        <option value="102030405">Poconos</option>
+        <option value="110293012">Bethlehem</option>
+      </select><br><br>
+
+      <label for="resTime"><span class="redAsterisk">*</span> Select a time:</label>
+      <input type="time" id="resTime" name="resTime" required><br><br>
+
+      <label for="partySize"><span class="redAsterisk">*</span> Size of party:</label>
+      <input type="number" id="partySize" name="partySize" min="1" max="12" value="2"><br><br>
+
+      <label for="email">Enter your email:</label>
+      <input type="email" id="email" pattern=".+@example\.com" size="30" placeholder = "example@example.com"/> <br><br>
+
+      <label for="phone">Enter your phone number</label>
+      <input type="tel" id="phone"  name="phone"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" /> <br><br>
+
+      <input type="checkbox" id="optIns" name="optIns" value="optIns">
+      <label for="optIns"> Sign me up for promotions and restaurant news!</label><br><br>
+      
+      
+
+      <input type="submit" value="Submit">
+    </fieldset>
+  </form>
   <p id="text"></p>
   <script src="script.js"></script>
 </body>
+
 </html>

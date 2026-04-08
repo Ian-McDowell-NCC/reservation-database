@@ -14,11 +14,11 @@ export const runSQLfile = async (sqlPath) => {
     const result = await pool.request().batch(script);
 
     // Output all query results
-    result.recordsets.forEach((recordset, index) => { 
+    result.recordsets.forEach((recordset, index) => {
       console.log(`----- QUERY #${index + 1} -------`)
       console.log(recordset);
 
-     })
+    })
     await pool.close();
 
   } catch (err) {

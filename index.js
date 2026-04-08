@@ -71,7 +71,7 @@ app.get('/data', async (req, res) => {
     html += JSONtoTableHTML(results[i])
   }
   res.send(html); */
-  
+
   //if sending as JSON
   res.json(results)
 })
@@ -79,27 +79,27 @@ app.get('/data', async (req, res) => {
 
 function JSONtoTableHTML(jsonArr) {
   let tablehtml = '<table style="border: 2px solid black; border-collapse: collapse;">';
-  
+
   for (const i in jsonArr[0]) {
     tablehtml += `<th style="border: 1px solid gray">${i}</th>`;
   }
 
-  for(const i in jsonArr){
+  for (const i in jsonArr) {
     tablehtml += "<tr>";
     for (const j in jsonArr[i]) {
-      if(j == 'ResDate'){
+      if (j == 'ResDate') {
         jsonArr[i][j] = jsonArr[i][j].toDateString();
       }
       //make sure ResTime just shows the time
-      if(j == 'ResTime'){
+      if (j == 'ResTime') {
         jsonArr[i][j] = jsonArr[i][j].toLocaleTimeString();
       }
-      if(jsonArr[i][j] == null){
+      if (jsonArr[i][j] == null) {
         tablehtml += `<td style="border: 1px solid gray"></td>`;
       } else {
         tablehtml += `<td style="border: 1px solid gray">${jsonArr[i][j]}</td>`;
       }
-      
+
     }
     tablehtml += "</tr>";
   }
