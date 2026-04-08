@@ -36,8 +36,9 @@ runSQLfile('./queries.sql');
 
 // console.log(result[0])
 // Send data to frontend as JSON
-app.get('/api/data', async (req, res) => {
+app.get('/data', async (req, res) => {
   const results = [];
+  let html = '';
   for (const q in req.query) {
     switch (req.query[q]) {
       // Perform whatever SQL queries the GET request is sent from the URL parameters
@@ -64,5 +65,44 @@ app.get('/api/data', async (req, res) => {
     }
   }
   console.log(req.query.req9 == undefined);
-  res.json(results);
+
+  //If sending as HTML
+  /* for(const i in results){
+    html += JSONtoTableHTML(results[i])
+  }
+  res.send(html); */
+  
+  //if sending as JSON
+  res.json(results)
 })
+
+
+function JSONtoTableHTML(jsonArr) {
+  let tablehtml = '<table style="border: 2px solid black; border-collapse: collapse;">';
+  
+  for (const i in jsonArr[0]) {
+    tablehtml += `<th style="border: 1px solid gray">${i}</th>`;
+  }
+
+  for(const i in jsonArr){
+    tablehtml += "<tr>";
+    for (const j in jsonArr[i]) {
+      if(j == 'ResDate'){
+        jsonArr[i][j] = jsonArr[i][j].toDateString();
+      }
+      //make sure ResTime just shows the time
+      if(j == 'ResTime'){
+        jsonArr[i][j] = jsonArr[i][j].toLocaleTimeString();
+      }
+      if(jsonArr[i][j] == null){
+        tablehtml += `<td style="border: 1px solid gray"></td>`;
+      } else {
+        tablehtml += `<td style="border: 1px solid gray">${jsonArr[i][j]}</td>`;
+      }
+      
+    }
+    tablehtml += "</tr>";
+  }
+  tablehtml += "</table>";
+  return tablehtml;
+};

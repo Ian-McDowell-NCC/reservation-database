@@ -1,21 +1,29 @@
+const dataTables = [];
 
 function getAllTables(){
   //get data for all tables
   //the parameters after ? ask for different queries
   //name of parameters (req1, req2 etc.) doesn't matter
   //values do (reservation, table, etc.)
-fetch('/api/data?req1=reservation&req2=table&req3=waitstaff&req4=user&req0=restaurant')
+fetch('/data?req1=reservation&req2=table&req3=waitstaff&req4=user&req0=restaurant')
+  //receive HTML
+  /* .then(res => res.text())
+  .then(data => {
+    document.getElementById('text').insertAdjacentHTML('afterend', data) */
+  //receive JSON
   .then(res => res.json())
   .then(data => {
     //for each table returned in json form, convert it into an html table
     for(const i in data){
-    JSONtoTable(data[i]);
+    dataTables[i] = JSONtoTable(data[i]);
+    document.body.appendChild(dataTables[i]);
     }
   });
 }
 getAllTables();
 
 //gets the json forms of sql query results and converts into an html table 
+//returns the table
 function JSONtoTable(jsonArr) {
   //make table
   const table = document.createElement('table');
@@ -43,5 +51,5 @@ function JSONtoTable(jsonArr) {
       const tCell = mRow.insertCell().innerText = jsonArr[a][i];
     }
   }
-  document.body.appendChild(table);
+  return table;
 }
