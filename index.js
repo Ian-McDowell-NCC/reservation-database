@@ -11,6 +11,7 @@ import 'dotenv/config';
 const app = express()
 const port = 3000
 app.use(express.static('public'))
+app.use(express.json());
 
 // Output port to log
 app.listen(port, () => {
@@ -29,11 +30,17 @@ const connect = async () => {
 
 connect();
 
-runSQLfile('./queries.sql');
+//runSQLfile('./queries.sql');
 
 //update PartyName
 //runSingleQuery("UPDATE Reservation SET PartyName = 'Alfred Schmidt' WHERE ReservationID = 324293838;")
 
+app.post('/createRes', async (req, res) => {
+  console.log(req.body);
+  res.send('lorem ipsum');
+})
+
+//view res by id
 app.get('/reservation', async (req, res) => {
   //holds html output as string
   //can't be the best way but idk what else to do
@@ -43,7 +50,6 @@ app.get('/reservation', async (req, res) => {
   //make sure an id was provided
   if (id != undefined) {
     const queryResult = await runSingleQuery(`SELECT * FROM Reservation WHERE ReservationID = ${req.query['id']}`);
-    console.log(Object.keys(queryResult).length == 0);
     //make sure there is a result
     if (Object.keys(queryResult).length != 0 && queryResult != undefined) {
       //get results from query

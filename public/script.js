@@ -4,6 +4,23 @@ const today = new Date().toISOString().split('T')[0];
 resDateForm.min = today;
 resDateForm.value = today;
 
+//wait for create res form to be submitted
+document.getElementById("CreateResForm").addEventListener("submit", (e) => {
+  e.preventDefault();
+  //put the data from the form into an object that cna be converted to JSON
+  const newResForm = new FormData(e.target);
+  const newResInfo = Object.fromEntries(newResForm.entries());
+
+  //send form data as a JSON to backend
+  fetch("/createRes", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify(newResInfo),
+  });
+})
+
 function getAllTables() {
   //get data for all tables
   //the parameters after ? ask for different queries
@@ -14,7 +31,7 @@ function getAllTables() {
     /* .then(res => res.text())
     .then(data => {
       document.getElementById('text').insertAdjacentHTML('afterend', data) */
-      
+
     //receive JSON
     .then(res => res.json())
     .then(data => {
