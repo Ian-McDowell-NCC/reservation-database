@@ -19,6 +19,11 @@
 </head>
 
 <body>
+  <form id="ViewResForm" action="/reservation">
+    <label for="ViewResID">Enter reservation id to view details: </label>
+    <input type="text" id="ViewResID" name="id">
+  </form>
+  <br><br>
   <form id="CreateResForm">
     <fieldset>
       <legend>Create Reservation:</legend>
@@ -45,7 +50,7 @@
       <input type="email" id="email" pattern=".+@example\.com" size="30" placeholder = "example@example.com"/> <br><br>
 
       <label for="phone">Enter your phone number</label>
-      <input type="tel" id="phone"  name="phone"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" /> <br><br>
+      <input type="tel" id="phone"  name="phone"  pattern="[0-9]{3}-[0-9]{3}-[0-9]{4}" placeholder = "123-456-7890"/> <br><br>
 
       <input type="checkbox" id="optIns" name="optIns" value="optIns">
       <label for="optIns"> Sign me up for promotions and restaurant news!</label><br><br>

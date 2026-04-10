@@ -34,6 +34,43 @@ runSQLfile('./queries.sql');
 //update PartyName
 //runSingleQuery("UPDATE Reservation SET PartyName = 'Alfred Schmidt' WHERE ReservationID = 324293838;")
 
+app.get('/reservation', async (req, res) => {
+  //holds html output as string
+  //can't be the best way but idk what else to do
+  var output = '';
+  var id = req.query['id'];
+
+  //make sure an id was provided
+  if (id != undefined) {
+    const queryResult = await runSingleQuery(`SELECT * FROM Reservation WHERE ReservationID = ${req.query['id']}`);
+    console.log(Object.keys(queryResult).length == 0);
+    //make sure there is a result
+    if (Object.keys(queryResult).length != 0 && queryResult != undefined) {
+      //get results from query
+      var partyName = queryResult[0]['PartyName'];
+      var resDate = queryResult[0]['ResDate'].toLocaleDateString();
+      var resTime = queryResult[0]['ResTime'].toLocaleTimeString();
+      var partyName = queryResult[0]['PartyName'];
+      var comments = queryResult[0]['Comments'] != null ? queryResult[0]['Comments'] : 'None';
+      var resPhone = queryResult[0]['ResPhone'] != null ? queryResult[0]['ResPhone'] : 'Not Provided';
+      var resEmail = queryResult[0]['ResEmail'] != null ? queryResult[0]['ResEmail'] : 'Not Provided';
+
+      //store vale of results in output
+      output += `<h2>Viewing Reservation ${id}:</h2>`;
+      output += `Party name: ${partyName}<br>`;
+      output += `Reservation for ${resDate} at  ${resTime}<br>`;
+      output += `Party name: ${partyName}<br>`;
+      output += `Comments: ${comments}<br>`;
+      output += `Phone number: ${resPhone}<br>`;
+      output += `Email: ${resEmail}<br>`;
+      res.send(output)
+    } else {
+      res.send("ERROR: There is no reservation with that id");
+    }
+  } else {
+    res.send("ERROR: Please enter id")
+  }
+})
 // console.log(result[0])
 // Send data to frontend as JSON
 app.get('/data', async (req, res) => {
@@ -64,7 +101,6 @@ app.get('/data', async (req, res) => {
         }
     }
   }
-  console.log(req.query.req9 == undefined);
 
   //If sending as HTML
   /* for(const i in results){

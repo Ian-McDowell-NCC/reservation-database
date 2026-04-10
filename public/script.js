@@ -14,6 +14,7 @@ function getAllTables() {
     /* .then(res => res.text())
     .then(data => {
       document.getElementById('text').insertAdjacentHTML('afterend', data) */
+      
     //receive JSON
     .then(res => res.json())
     .then(data => {
