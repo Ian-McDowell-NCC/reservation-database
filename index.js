@@ -7,6 +7,7 @@ import { config } from './config.js';
 import { runSQLfile, runSingleQuery } from './query.js';
 import 'dotenv/config';
 
+
 // Set up localhost for frontend
 const app = express()
 const port = 3000
@@ -35,8 +36,24 @@ connect();
 //update PartyName
 //runSingleQuery("UPDATE Reservation SET PartyName = 'Alfred Schmidt' WHERE ReservationID = 324293838;")
 
+ 
 app.post('/createRes', async (req, res) => {
   console.log(req.body);
+  //May create duplicate ids, need to change later
+  var NewResId = Math.floor(Math.random() * 899999999 + 100000000);
+  var NewResCreated = new Date(Date.now()).toISOString();
+  var NewResDate = req.body.resDate;
+  var NewResTime = req.body.resTime;
+  var NewResSize = req.body.partySize;
+  var NewResName = req.body.partyName;
+  var NewResRestaurant = req.body.restaurant;
+  var NewResEmail = req.body.email == undefined ? 'NULL' : req.body.email;
+  var NewResPhone = req.body.phone == undefined ? 'NULL' : req.body.phone;
+  var NewResOptIns = req.body.optIns == undefined ? 0 : 1;
+  var NewResComments = req.body.comments;
+  console.log(await runSingleQuery(`INSERT INTO Reservation VALUES (${NewResId}, '${NewResDate}', '${NewResTime}', ${NewResSize}, '${NewResName}', '${NewResPhone}', '${NewResEmail}', ${NewResOptIns}, 'IN FUTURE', '${NewResCreated}',  '${NewResComments}', ${NewResRestaurant}, NULL);`))
+
+  
   res.send('lorem ipsum');
 })
 
