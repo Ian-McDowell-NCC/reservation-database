@@ -82,21 +82,23 @@ app.get('/reservation', async (req, res) => {
     if (Object.keys(queryResult).length != 0 && queryResult != undefined) {
       //get results from query
       var partyName = queryResult[0]['PartyName'];
+      var partySize = queryResult[0]['PartySize'];
       var resDate = queryResult[0]['ResDate'].toLocaleDateString();
       var resTime = queryResult[0]['ResTime'].toLocaleTimeString();
-      var partyName = queryResult[0]['PartyName'];
-      var comments = queryResult[0]['Comments'] != null ? queryResult[0]['Comments'] : 'None';
-      var resPhone = queryResult[0]['ResPhone'] != null ? queryResult[0]['ResPhone'] : 'Not Provided';
-      var resEmail = queryResult[0]['ResEmail'] != null ? queryResult[0]['ResEmail'] : 'Not Provided';
+      var comments = queryResult[0]['Comments'] != '' ? queryResult[0]['Comments'] : 'None';
+      var resPhone = queryResult[0]['ResPhone'] != '' ? queryResult[0]['ResPhone'] : 'Not Provided';
+      var resEmail = queryResult[0]['ResEmail'] != '' ? queryResult[0]['ResEmail'] : 'Not Provided';
 
       //store vale of results in output
       output += `<h2>Viewing Reservation ${id}:</h2>`;
       output += `Party name: ${partyName}<br>`;
-      output += `Reservation for ${resDate} at  ${resTime}<br>`;
-      output += `Party name: ${partyName}<br>`;
+      output += `Reservation for ${partySize} on ${resDate} at ${resTime}<br>`;
       output += `Comments: ${comments}<br>`;
       output += `Phone number: ${resPhone}<br>`;
       output += `Email: ${resEmail}<br>`;
+
+      //add delete button
+      output += `<button onclick="fetch('/deleteres?id=${id}').then(res => res.text()).then(data =>{alert('Reservation Cancelled'); history.back();})">Cancel Reservation</button>`
       res.send(output)
     } else {
       res.send("ERROR: There is no reservation with that id");
