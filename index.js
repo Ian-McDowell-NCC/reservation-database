@@ -52,9 +52,20 @@ app.post('/createRes', async (req, res) => {
   var NewResOptIns = req.body.optIns == undefined ? 0 : 1;
   var NewResComments = req.body.comments;
   console.log(await runSingleQuery(`INSERT INTO Reservation VALUES (${NewResId}, '${NewResDate}', '${NewResTime}', ${NewResSize}, '${NewResName}', '${NewResPhone}', '${NewResEmail}', ${NewResOptIns}, 'IN FUTURE', '${NewResCreated}',  '${NewResComments}', ${NewResRestaurant}, NULL);`))
+  res.send(NewResId);
+})
 
-  
-  res.send('lorem ipsum');
+
+//delete reservation according to id
+app.get('/deleteres', async (req, res) =>{
+  const result = await runSingleQuery(`DELETE FROM Reservation WHERE ReservationID = ${req.query['id']}`);
+  //as far as I can tell, if the query ran successfully it will return as undefined, otherwise it will give an error message
+  //I could be wrong about that though
+  if(result == undefined){
+    res.send("Success")
+  } else {
+    res.send("Error")
+  }
 })
 
 //view res by id

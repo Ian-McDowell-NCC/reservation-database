@@ -27,7 +27,7 @@ function getAllTables() {
   //name of parameters (req1, req2 etc.) doesn't matter
   //values do (reservation, table, etc.)
   fetch('/data?req1=reservation&req2=table&req3=waitstaff&req4=user&req0=restaurant')
-    //receive HTML
+    //if you want to receive HTML
     /* .then(res => res.text())
     .then(data => {
       document.getElementById('text').insertAdjacentHTML('afterend', data) */
@@ -49,14 +49,17 @@ getAllTables();
 function JSONtoTable(jsonArr) {
   //make table
   const table = document.createElement('table');
+  var resTable;
 
   //add row for column names
   const headerRow = table.insertRow(0);
   //add column names to header row
   for (const i in jsonArr[0]) {
     const headerCell = headerRow.insertCell().innerText = i;
+    if (i == 'ReservationID') {
+      resTable = true;
+    }
   }
-
   //add each row to the table
   for (const a in jsonArr) {
     const mRow = table.insertRow();
@@ -72,6 +75,31 @@ function JSONtoTable(jsonArr) {
       }
       const tCell = mRow.insertCell().innerText = jsonArr[a][i];
     }
+
+    //add only to table of reservations
+    if (resTable) {
+      //make button
+      const button = document.createElement('button');
+      button.innerText = "Cancel Reservation";
+
+      //make it so when you click the button, it sends the call to delete the row in the database
+      button.addEventListener("click", () => {
+        fetch(`/deleteres?id=${jsonArr[a]['ReservationID']}`)
+        //get response in plain text form
+          .then(res => res.text())
+          .then(data => {
+            //if the deletion does not give an error, delete the row from the HTML table
+            if(data == "Success"){
+              mRow.remove();
+            } else {
+              alert("UNKOWN ERROR, CHECK LOGS")
+            }
+          })
+      })
+      //add the button to the table
+      mRow.insertCell().appendChild(button);
+    };
+
   }
   return table;
 }
