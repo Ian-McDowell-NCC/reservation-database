@@ -7,7 +7,6 @@ import { config } from './config.js';
 import { runSQLfile, runSingleQuery } from './query.js';
 import 'dotenv/config';
 
-
 // Set up localhost for frontend
 const app = express()
 const port = 3000
@@ -35,11 +34,10 @@ connect();
 
 //update PartyName
 //runSingleQuery("UPDATE Reservation SET PartyName = 'Alfred Schmidt' WHERE ReservationID = 324293838;")
-
  
 app.post('/createRes', async (req, res) => {
   console.log(req.body);
-  //May create duplicate ids, need to change later
+  // May create duplicate ids; need to change later
   var NewResId = Math.floor(Math.random() * 899999999 + 100000000);
   var NewResCreated = new Date(Date.now()).toISOString();
   var NewResDate = req.body.resDate;
@@ -55,12 +53,9 @@ app.post('/createRes', async (req, res) => {
   res.send(NewResId);
 })
 
-
-//delete reservation according to id
+// Delete reservation according to ID
 app.get('/deleteres', async (req, res) =>{
   const result = await runSingleQuery(`DELETE FROM Reservation WHERE ReservationID = ${req.query['id']}`);
-  //as far as I can tell, if the query ran successfully it will return as undefined, otherwise it will give an error message
-  //I could be wrong about that though
   if(result == undefined){
     res.send("Success")
   } else {
@@ -68,19 +63,18 @@ app.get('/deleteres', async (req, res) =>{
   }
 })
 
-//view res by id
+// View res by ID
 app.get('/reservation', async (req, res) => {
-  //holds html output as string
-  //can't be the best way but idk what else to do
+  // Hold HTML output as string
   var output = '';
   var id = req.query['id'];
 
-  //make sure an id was provided
+  // Make sure an ID was provided
   if (id != undefined) {
     const queryResult = await runSingleQuery(`SELECT * FROM Reservation WHERE ReservationID = ${req.query['id']}`);
-    //make sure there is a result
+    // Make sure there is a result
     if (Object.keys(queryResult).length != 0 && queryResult != undefined) {
-      //get results from query
+      // Get results from query
       var partyName = queryResult[0]['PartyName'];
       var partySize = queryResult[0]['PartySize'];
       var resDate = queryResult[0]['ResDate'].toLocaleDateString();
@@ -89,7 +83,7 @@ app.get('/reservation', async (req, res) => {
       var resPhone = queryResult[0]['ResPhone'] != '' ? queryResult[0]['ResPhone'] : 'Not Provided';
       var resEmail = queryResult[0]['ResEmail'] != '' ? queryResult[0]['ResEmail'] : 'Not Provided';
 
-      //store vale of results in output
+      // Store value of results in output
       output += `<h2>Viewing Reservation ${id}:</h2>`;
       output += `Party name: ${partyName}<br>`;
       output += `Reservation for ${partySize} on ${resDate} at ${resTime}<br>`;
@@ -97,7 +91,7 @@ app.get('/reservation', async (req, res) => {
       output += `Phone number: ${resPhone}<br>`;
       output += `Email: ${resEmail}<br>`;
 
-      //add delete button
+      // Add delete button
       output += `<button onclick="fetch('/deleteres?id=${id}').then(res => res.text()).then(data =>{alert('Reservation Cancelled'); history.back();})">Cancel Reservation</button>`
       res.send(output)
     } else {
@@ -115,7 +109,7 @@ app.get('/data', async (req, res) => {
   for (const q in req.query) {
     switch (req.query[q]) {
       // Perform whatever SQL queries the GET request is sent from the URL parameters
-      // Holds results in an array
+      // Hold results in an array
       case "reservation":
         results[results.length] = await runSingleQuery(`SELECT * FROM Reservation`);
         break;
@@ -138,16 +132,15 @@ app.get('/data', async (req, res) => {
     }
   }
 
-  //If sending as HTML
+  // If sending as HTML
   /* for(const i in results){
     html += JSONtoTableHTML(results[i])
   }
   res.send(html); */
 
-  //if sending as JSON
+  // If sending as JSON
   res.json(results)
 })
-
 
 function JSONtoTableHTML(jsonArr) {
   let tablehtml = '<table style="border: 2px solid black; border-collapse: collapse;">';
@@ -162,7 +155,7 @@ function JSONtoTableHTML(jsonArr) {
       if (j == 'ResDate') {
         jsonArr[i][j] = jsonArr[i][j].toDateString();
       }
-      //make sure ResTime just shows the time
+      // Make sure ResTime only shows the time
       if (j == 'ResTime') {
         jsonArr[i][j] = jsonArr[i][j].toLocaleTimeString();
       }
