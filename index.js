@@ -56,7 +56,8 @@ app.post('/createRes', async (req, res) => {
 // Delete reservation according to ID
 app.get('/deleteres', async (req, res) =>{
   const result = await runSingleQuery(`DELETE FROM Reservation WHERE ReservationID = ${req.query['id']}`);
-  if(result && result.affectedRows > 0){
+  //result.affectedRows > 0 doesn't work (TypeError: Cannot read properties of undefined (reading 'affectedRows'))
+  if(result == undefined){
     res.send("Success")
   } else {
     res.send("Error")
